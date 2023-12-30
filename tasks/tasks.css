@@ -1,0 +1,25 @@
+.tasks{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2rem;
+    flex-direction: column;
+}
+.createTask{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.createTask input{
+    width: 190px;
+    margin-right: 1rem;
+}
+
+#tasksList{
+    height: 500px;
+    width: 500px;
+    border: 2px solid black;
+    padding-top: 1rem;
+}
