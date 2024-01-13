@@ -2,12 +2,11 @@ let addNewBtn = document.getElementById("addNew");
 let taskInput = document.getElementById("newTask");
 let taskDate = document.getElementById("newTaskDate");
 let taskPrio = document.getElementById("newTaskPrio");
+let notification = document.getElementById("notification");
+let notificationTitle = document.getElementById("notification-title");
 
-// BUG: Tasks should not be allowed to be dragged from where they were originally picked
-// Only todo board is allowing proper drag
 
 window.onload = () => {
-  // Check if 'tasks' key exists in localStorage
   if (!localStorage.getItem("tasks")) {
     let tasksList = [];
     localStorage.setItem("tasks", JSON.stringify(tasksList));
@@ -56,6 +55,27 @@ function addNewTask(e) {
   let title = taskInput.value;
   let date = taskDate.value;
   let prio = taskPrio.value;
+  if (title === "") {
+    notificationTitle.textContent = "Title should not be empty";
+    notification.classList.add("show-notification");
+    setTimeout(() => {
+      notification.classList.remove("show-notification");
+    }, 3000);
+
+    return;
+  }
+  if (date === "") {
+    notificationTitle.textContent = "Date should not be empty";
+    if (!notification.classList.contains("show-notification")) {
+      notification.classList.add("show-notification");
+    }
+
+    setTimeout(() => {
+      notification.classList.remove("show-notification");
+    }, 3000);
+    return;
+  }
+
   taskInput.value = "";
   taskDate.value = null;
   taskPrio.value = "Low";
@@ -212,7 +232,16 @@ function addTaskToBoard(task) {
   taskInfoActionsDiv.append(taskInfoDiv);
   taskInfoActionsDiv.append(taskActionsDiv);
   newTaskDiv.append(taskInfoActionsDiv);
-  boardToAdd.append(newTaskDiv);
+  if (boardToAdd.firstChild) {
+    boardToAdd.insertBefore(newTaskDiv, boardToAdd.firstChild);
+  } else {
+    // If the board is empty, just append the task
+    boardToAdd.append(newTaskDiv);
+  }
+  setTimeout(() => {
+    newTaskDiv.classList.add("show-animation");
+  }, 100);
+  // newTaskDiv.style.transform = "translateY(0)";
 }
 
 function createAddIcon(divToAppend) {
@@ -277,8 +306,8 @@ function updateTask(uuid, board) {
 }
 
 function deleteTask(e) {
-  console.log("del");
   let taskDiv = e.target.parentElement.parentElement.parentElement;
+  taskDiv.classList.remove("show-animation");
   let uuid = taskDiv.getAttribute("data-uuid");
   let tasksList = JSON.parse(localStorage.getItem("tasks"));
 
@@ -289,5 +318,8 @@ function deleteTask(e) {
     }
   }
   localStorage.setItem("tasks", JSON.stringify(tasksList));
-  window.location.reload();
+
+  setTimeout(() => {
+    window.location.reload();
+  }, 1000);
 }
