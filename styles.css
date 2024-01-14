@@ -108,7 +108,7 @@ label{
 }
 
 .dragging{
-    border: 2px dotted rgba(128, 128, 128, 0.9);
+    border: 3px dotted rgba(128, 128, 128, 0.9);
 }
 
 .tasks{

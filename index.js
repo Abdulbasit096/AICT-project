@@ -45,9 +45,6 @@ function drop(event) {
   let task = getFromLocalStorage(draggedTask.getAttribute("data-uuid"));
   task.task.board = event.target.id;
   updateInLocalStorage(task.uuid, task);
-  document.querySelectorAll(".tasks").forEach((item) => {
-    item.classList.remove("dragging");
-  });
 }
 
 function addNewTask(e) {
@@ -189,6 +186,11 @@ function addTaskToBoard(task) {
   newTaskDiv.draggable = true;
   newTaskDiv.ondragstart = function (event) {
     drag(event);
+  };
+  newTaskDiv.onmouseleave = function (e) {
+    document.querySelectorAll(".tasks").forEach((item) => {
+      item.classList.remove("dragging");
+    });
   };
   newTaskDiv.className = "task";
   let taskTitleSpan = document.createElement("span");
