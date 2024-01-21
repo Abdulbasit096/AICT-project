@@ -317,12 +317,13 @@ function deleteTask(e) {
   let taskDiv =
     e.target.parentElement.parentElement.parentElement.parentElement;
   let uuid = taskDiv.getAttribute("data-uuid");
+  taskDiv.classList.remove("show-animation");
+  
   let tasksList = JSON.parse(localStorage.getItem("tasks"));
   tasksList = tasksList.filter((task) => task.uuid !== uuid);
+  console.log(tasksList);
 
   localStorage.setItem("tasks", JSON.stringify(tasksList));
-
-  taskDiv.classList.remove("show-animation");
 
   setTimeout(() => {
     window.location.reload();
